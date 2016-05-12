@@ -1,35 +1,45 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
-        <members>*</members>
+        <members>SaleConfigTest</members>
+        <members>SalesConfigHandler</members>
+        <members>Sample</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>Sample</members>
+        <name>ApexComponent</name>
+    </types>
+    <types>
+        <members>Sample</members>
+        <name>ApexPage</name>
+    </types>
+    <types>
+        <members>Sample</members>
+        <name>ApexTrigger</name>
+    </types>
+    <types>
+        <members>Sales</members>
+        <members>SalesConfig</members>
+        <members>SmsConfig</members>
         <name>AuraDefinitionBundle</name>
+    </types>
+    <types>
+        <members>SalesObjects__c</members>
+        <members>sales__c</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>SalesObjects__c</members>
+        <name>CustomTab</name>
     </types>
     <types>
         <members>*</members>
         <name>Flow</name>
     </types>
     <types>
-        <members>*</members>
-        <name>EmailTemplate</name>
+        <members>SalesObjects__c-SalesObject Layout</members>
+        <name>Layout</name>
     </types>
-    <types>
-        <members>SaleConfigTest</members>
-        <members>SalesConfigHandler</members>
-        <name>ApexClass</name>
-    </types>
-    <types>
-        <members>sales__c</members>
-        <members>SalesObjects__c</members>
-        <name>CustomObject</name>
-    </types>
-    <types>
-        <members>SalesObjects__c</members>
-        <members>sales__c</members>
-        <name>Workflow</name>
-    </types>
-    <types>
-        <members>SalesObjects__c</members>
-        <name>CustomTab</name>
-    </types>
-    <version>35.0</version>
+    <version>36.0</version>
 </Package>
