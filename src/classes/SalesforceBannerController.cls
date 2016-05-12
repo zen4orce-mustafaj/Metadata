@@ -15,8 +15,6 @@ public  with sharing class SalesforceBannerController  {
     {
       	
     		    Schema.SObjectType type = gd.get(choosenObject);
-                Organization org = [SELECT NamespacePrefix FROM Organization];
-            	String nameSpace = String.valueOf(org.NamespacePrefix);
                 objects = new list<selectoption>();
                 list<String> sortObject = new list<String>();
                 sortObject.addAll(gd.KeySet());
@@ -27,6 +25,8 @@ public  with sharing class SalesforceBannerController  {
                 objects.add(new selectOption('NONE','NONE'));
                 choosenopField = 'Yes';
          		DescribeSObjectResult[] results = Schema.describeSObjects(sortObject);
+             
+              
        
         try
         {
@@ -34,19 +34,15 @@ public  with sharing class SalesforceBannerController  {
            for(Schema.DescribeSObjectResult res : results)
                 {
                     String resString = res.getName();
-                    if(!res.isCustomSetting() && !res.isCustom()  && res.getRecordTypeInfos().size() > 0  && res.isSearchable() && res.isDeletable() && res.isCreateable() && res.isUpdateable()  && res.isUndeletable() && !resString.containsIgnoreCase('Idea') && !resString.containsIgnoreCase('PriceBook'))
+                    if(!res.isCustomSetting() && res.getRecordTypeInfos().size() > 0  && res.isSearchable() && res.isDeletable() && res.isCreateable() && res.isUpdateable()  && res.isUndeletable() )
                    		 {
-                            objects.add(new selectOption(res.getName(),res.getLabel()));
+                            System.debug(res.getName());
+                             objects.add(new selectOption(res.getName(),res.getLabel()));
                             
                     	 }
                    
-                    if((res.isCustom() && resString.containsignorecase(nameSpace)))
-                        {
-                               
-                                objects.add(new selectOption(res.getName(),res.getLabel()));
-                        }
-                    }
-                }
+                  }
+        }
          
         catch(Exception e)
         {
