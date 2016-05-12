@@ -38,34 +38,38 @@
     <!-- BOXED AREA -->
     <fieldset class="slds-box slds-theme--default slds-container--medium">
       <legend id="newaccountform" class="slds-text-heading--medium slds-p-vertical--medium">Add a new Button</legend>
-      <b>Object:</b> <apex:selectList value="{!choosenObject}" size="1" label="Object">
+        <apex:pageBlock >
+        <apex:pageBlockSection >
+      <apex:selectList value="{!choosenObject}" size="1" label="Object" style="width:50%;border-radius: 3px 3px 3px 3px;height: 25px">
            <apex:selectOptions value="{!ListOfObject}"/>
         <apex:actionSupport event="onchange" action="{!populateFields}"  reRender="st,st1"/>
        
         </apex:selectList>
         <br/>     
          <br/>    
-        <b>SMS Button Type:</b><apex:selectList value="{!choosenButtonType}" size="1" label="SMS Button Type">
+        <apex:selectList value="{!choosenButtonType}" size="1" label="SMS Button Type" style="width:50%;border-radius: 3px 3px 3px 3px;height: 25px">
         	<apex:selectOptions value="{!ButtonType}" />  
         </apex:selectList>
           <br/>
         <br/>  
-         <b>Mobile Phone Field:</b><apex:selectList value="{!choosenMobilePhone}" size="2" multiselect="true" label="Mobile Phone field" id="st">
+         <apex:selectList value="{!choosenMobilePhone}" size="2" multiselect="true" label="Mobile Phone field" id="st" style="width:50%;border-radius: 3px 3px 3px 3px;height: 25px">
         <apex:selectOptions value="{!Mphonelist}"/>
         </apex:selectList> 
           <br/>  
         <br/>  
-        <b>SMS Optout Field:</b><apex:selectList value="{!choosenOptOutField}" size="1" id="st1">
-        <apex:selectOptions value="{!outList}"/>
+        <apex:selectList value="{!choosenOptOutField}" label="SMS Optout Field:" size="1" id="st1" style="width:50%;border-radius: 3px 3px 3px 3px;height: 25px">
+        <apex:selectOptions value="{!outList}" />
         </apex:selectList>
           <br/> 
         <br/>  
-        <b>DefaultOptOutField:</b><apex:selectList value="{!choosenopField}" size="1" label="">
+        <apex:selectList value="{!choosenopField}" label="DefaultOptOutField:" size="1" style="width:50%;border-radius: 3px 3px 3px 3px;height: 25px">
             <apex:selectOptions value="{!defaultOptoutField}" />
             </apex:selectList>
         <br/>
-        <b><apex:commandButton action="{!Create}" value="Create"/></b>
-        
+         <br/>
+        <b><apex:commandButton action="{!Create}" value="Create" style="width:15%;border-radius: 3px 3px 3px 3px;height: 25px"/></b>
+        </apex:pageBlockSection>
+            </apex:pageBlock>
      </fieldset>
     </div>
       </div>
