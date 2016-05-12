@@ -1,0 +1,10 @@
+Dear {!Service_Configuration__c.Contact__c},
+		       
+Your Appointment is confirmed for, {!Service_Configuration__c.Service_Appointment__c} Please reply with the following options -
+
+To confirm - {!$Setup.SMSConfiguration__c.Confirmation_Keyword__c}
+To reschedule - {!$Setup.SMSConfiguration__c.Follow_up_keyword__c}
+				
+
+Regards,
+Zen4orce Team

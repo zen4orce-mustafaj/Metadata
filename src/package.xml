@@ -6,19 +6,35 @@
     </types>
     <types>
         <members>*</members>
-        <name>ApexComponent</name>
+        <name>CustomObject</name>
     </types>
     <types>
         <members>*</members>
-        <name>ApexPage</name>
+        <name>CustomTab</name>
+    </types>
+    <types>
+        <members>unfiled$public</members>
+        <members>unfiled$public/Keyword_Related_Email</members>
+        <members>unfiled$public/MarketingProductInquiryResponse</members>
+        <members>unfiled$public/SUPPORTSelfServiceNewCommentNotificationSAMPLE</members>
+        <members>unfiled$public/SUPPORTSelfServiceNewUserLoginInformationSAMPLE</members>
+        <members>unfiled$public/SUPPORTSelfServiceResetPasswordSAMPLE</members>
+        <members>unfiled$public/SalesNewCustomerEmail</members>
+        <members>unfiled$public/Service_Appointment_Confirmation</members>
+        <members>unfiled$public/Service_Scheduled_Reminder</members>
+        <members>unfiled$public/SupportCaseAssignmentNotification</members>
+        <members>unfiled$public/SupportCaseCreatedPhoneInquiries</members>
+        <members>unfiled$public/SupportCaseCreatedWebInquiries</members>
+        <members>unfiled$public/SupportCaseResponse</members>
+        <members>unfiled$public/SupportEscalatedCaseNotification</members>
+        <members>unfiled$public/SupportEscalatedCaseReassignment</members>
+        <members>unfiled$public/SupportSelfServiceNewLoginandPassword</members>
+        <members>unfiled$public/SupportSelfServiceResetPassword</members>
+        <name>EmailTemplate</name>
     </types>
     <types>
         <members>*</members>
-        <name>ApexTrigger</name>
-    </types>
-    <types>
-        <members>*</members>
-        <name>StaticResource</name>
+        <name>Flow</name>
     </types>
     <version>36.0</version>
 </Package>
