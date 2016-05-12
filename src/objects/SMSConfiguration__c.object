@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <description>SMSConfiguration Hierarchy Custom Setting</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>Confirmation_Keyword__c</fullName>
+        <description>confirmation text field</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Confirmation text field</inlineHelpText>
+        <label>Confirmation Keyword</label>
+        <length>100</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Follow_up_keyword__c</fullName>
+        <description>followup task on keyword</description>
+        <externalId>false</externalId>
+        <inlineHelpText>followup task on keyword</inlineHelpText>
+        <label>Follow up keyword</label>
+        <length>100</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Service_Appointment_Confirmation__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Send Appointment Confirmation with following template</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Send Appointment Confirmation with following template</inlineHelpText>
+        <label>Service Appointment Confirmation</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Service_Appointment_Reminder__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Send Appointment Reminder</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Send Appointment Reminder</inlineHelpText>
+        <label>Service Appointment Reminder</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>X1_Hour_Reminder__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>1 Hour Reminder</description>
+        <externalId>false</externalId>
+        <inlineHelpText>1 Hour Reminder</inlineHelpText>
+        <label>1 Hour Reminder</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>X24_Hour_Reminder__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>24 Hour prior</description>
+        <externalId>false</externalId>
+        <inlineHelpText>24 Hour prior</inlineHelpText>
+        <label>24 Hour Reminder</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <label>SMSConfiguration</label>
+    <visibility>Public</visibility>
+</CustomObject>
