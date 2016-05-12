@@ -1,0 +1,201 @@
+<apex:page showHeader="false" standardStylesheets="false" sidebar="false" controller="VF_LEX_RemoteController">
+<head>
+    <title>Salesforce Lightning Design System Trailhead Module</title>
+	<apex:stylesheet value="{!URLFOR($Resource.SLDS103, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />    
+    <apex:includeScript value="https://code.jquery.com/jquery-2.2.1.min.js"></apex:includeScript>
+</head>
+<script>
+    $j = jQuery.noConflict();
+	$j(document).ready(function() {
+        debugger;
+        getObjects();
+	});
+function myJavascriptFunc(){
+	alert('Entered Javascript') ;
+    var inputVal = $j("#ddlObject").val();
+    var inputVal1 = $j("#ddlSmsButtonType").val();
+    var inputVal2 = $j("#ddlMobilePhoneField").val().toString();
+    CallApexMethod(inputVal,inputVal1,inputVal2) ;
+}
+function getObjects() {
+	//var accountName = document.getElementById('acctSearch').value;
+    Visualforce.remoting.Manager.invokeAction(
+	   '{!$RemoteAction.VF_LEX_RemoteController.getObjects}',
+    	//accountName, 
+        function(result, event){
+       		debugger;
+            if(result != null && result.length > 0){
+                //$j('#ddlObject').append($j('<option>', { value : '0' }).text('Select')); 
+                //$j('#ddlUnrelatedObject').append($j('<option>', { value : '0' }).text('Select')); 
+                for(var counter = 0; counter < result.length; counter++){
+                	$j('#ddlObject').append($j('<option>', { value : result[counter] }).text(result[counter])); 
+                    $j('#ddlUnrelatedObject').append($j('<option>', { value : result[counter] }).text(result[counter])); 
+                }
+             }
+            }, 
+            {escape: true}
+        );
+    }
+function OnObjectChange(){
+    	if($j("#ddlObject").val() != '0'){
+        	getObjectFields();
+        }
+    }
+function getObjectFields() {
+	var objectName = $j("#ddlObject").val();
+    Visualforce.remoting.Manager.invokeAction(
+	   '{!$RemoteAction.VF_LEX_RemoteController.getMobilePhoneField}',
+    	objectName, 
+        function(result, event){
+       		debugger;
+            if(result != null && result.length > 0){
+                for(var counter = 0; counter < result.length; counter++){
+                	$j('#ddlMobilePhoneField').append($j('<option>', { value : result[counter] }).text(result[counter])); 
+                }
+             }
+            }, 
+            {escape: true}
+        );
+    }
+
+</script>
+<apex:form >
+    <apex:actionFunction name="CallApexMethod" action="{!myActionInController}" onComplete="alert('After apex method') ;">
+    	<apex:param name="firstParam" assignTo="{!firstParam}" value="" />
+        <apex:param name="secondParam" assignTo="{!secondParam}" value="" />
+        <apex:param name="thirdParam" assignTo="{!thirdParam}" value="" />
+    </apex:actionFunction>
+</apex:form>
+<body>
+ <div class="slds">    
+    <!-- MASTHEAD -->
+    <p class="slds-text-heading--label slds-m-bottom--small">Salesforce Lightning Design System</p>
+    <!-- / MASTHEAD -->    
+
+   <!-- PAGE HEADER -->
+	<div class="slds-page-header" role="banner">
+  	<!-- LAYOUT GRID -->
+  		<div class="slds-grid">
+    	<!-- GRID COL -->
+    		<div class="slds-col">
+      		<!-- HEADING AREA -->
+      			<p class="slds-text-heading--label">Salesforce Banner</p>
+      			<h1 class="slds-text-heading--medium">Create Send SMS Button</h1>
+      		<!-- /HEADING AREA -->
+    		</div>
+  		</div>
+  	<!-- / LAYOUT GRID -->
+	</div>
+	<!-- / PAGE HEADER -->
+   	
+     <!-- PRIMARY CONTENT WRAPPER -->
+	<div class="myapp">
+    <apex:form >
+    	<div aria-labelledby="newform">
+    	<!-- BOXED AREA -->
+    	<fieldset class="slds-box slds-theme--default slds-container--medium">
+      	<legend id="newform" class="slds-text-heading--medium slds-p-vertical--medium">Add a new configuration</legend>  
+		<div class="slds-form--stacked">
+    		
+    <div class="slds-form-element">
+      <label class="slds-form-element__label" for="inputSample2">Object</label>
+      <div class="slds-form-element__control">
+          <select id="ddlObject" class="slds-select" onchange="OnObjectChange();">
+          </select>
+      </div>
+    </div>
+    <div class="slds-form-element">
+      <label class="slds-form-element__label" for="inputSample2">SMS Button Type</label>
+      <div class="slds-form-element__control">
+           <select id="ddlSmsButtonType" class="slds-select">
+          <option>Select</option>
+          <option>Single</option>
+          <option>Single Popup</option>
+          <option>Bulk</option>
+          <option>Bulk Popup</option>
+        </select>
+      </div>
+    </div>
+             <div class="slds-form-element">
+      <label class="slds-form-element__label" for="inputSample2">Mobile Phone Field</label>
+      <div class="slds-form-element__control">
+      	<select id="ddlMobilePhoneField" class="slds-select" multiple="true">
+        </select>
+      </div>
+    </div>
+             <div class="slds-form-element">
+      <label class="slds-form-element__label" for="inputSample2">SMS OptOut Field</label>
+      <div class="slds-form-element__control">
+           <select id="select-01" class="slds-select">
+          <option>Select SMS Template</option>
+          <option>Option Two</option>
+          <option>Option Three</option>
+        </select>
+      </div>
+    </div>
+             <div class="slds-form-element">
+      <label class="slds-form-element__label" for="inputSample2">Deafult OptOut Field</label>
+      <div class="slds-form-element__control">
+           <select id="select-01" class="slds-select">
+          <option>Select</option>
+          <option>Yes</option>
+          <option>No</option>
+        </select>
+      </div>
+    </div>
+             <div class="slds-form-element">
+      <label class="slds-form-element__label" for="">Unrelated Objects</label>
+      <div class="slds-form-element__control">
+      	<select id="ddlUnrelatedObject" class="slds-select">
+        </select>
+      </div>
+    </div>
+             <div class="slds-form-element">
+      <label class="slds-form-element__label" for="inputSample2">Name Field</label>
+      <div class="slds-form-element__control">
+           <select id="select-01" class="slds-select">
+          <option>Select</option>
+          <option>Option 1</option>
+          <option>Option 2</option>
+        </select>
+      </div>
+    </div>
+   
+ 
+    <div class="slds-form-element">
+      <button class="slds-button slds-button--brand" type="button" onclick="myJavascriptFunc();">Create</button>
+    </div>
+  </div>
+        </fieldset>
+    </div>
+        </apex:form>
+</div>
+<!-- / PRIMARY CONTENT WRAPPER -->
+  
+    <!-- FOOTER -->
+<footer role="contentinfo" class="slds-p-around--large">
+  <!-- LAYOUT GRID -->
+  <div class="slds-grid slds-grid--align-spread">
+    <p class="slds-col">Salesforce Lightning Design System Example</p>
+    <p class="slds-col">&copy; Zen4orce</p>
+  </div>
+  <!-- / LAYOUT GRID -->
+</footer>
+<!-- / FOOTER -->
+        <div class="slds-grid slds-wrap slds-grid--pull-padded">
+    <div class="slds-col--padded slds-size--1-of-1">1</div>
+    <div class="slds-col--padded slds-size--1-of-2 slds-medium-size--5-of-6 slds-large-size--8-of-12">2</div>
+    <div class="slds-col--padded slds-size--1-of-2 slds-medium-size--1-of-6 slds-large-size--4-of-12">3</div>
+    <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3">4</div>
+    <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3">5</div>
+    <div class="slds-col--padded slds-size--1-of-1 slds-large-size--1-of-3">
+      <div class="slds-grid slds-wrap slds-grid--pull-padded">
+        <div class="slds-col--padded slds-size--1-of-2 slds-medium-size--1-of-1 slds-large-size--1-of-2">6</div>
+        <div class="slds-col--padded slds-size--1-of-2 slds-medium-size--1-of-1 slds-large-size--1-of-2">7</div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+</body>
+</apex:page>
