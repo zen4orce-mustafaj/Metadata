@@ -1,0 +1,76 @@
+<apex:page showHeader="false" standardStylesheets="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" docType="html-5.0" controller="SalesforceBannerController"> 
+    <apex:form >
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">    
+<head>
+  <title>Send SMS Button</title>
+  <apex:stylesheet value="{!URLFOR($Resource.SLDS102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+</head>    
+<body>    
+  <!-- REQUIRED SLDS WRAPPER -->
+  <div class="slds">    
+    <!-- MASTHEAD -->
+    <p class="slds-text-heading--label slds-m-bottom--small">Salseforce Baner</p>
+    <!-- / MASTHEAD -->    
+
+   <!-- PAGE HEADER -->
+	<div class="slds-page-header" role="banner">
+  	<!-- LAYOUT GRID -->
+  	<div class="slds-grid">
+    <!-- GRID COL -->
+    <div class="slds-col">
+      <!-- HEADING AREA -->
+    
+      <h1 class="slds-text-heading--medium">Create Send SMS Button</h1>
+      <!-- /HEADING AREA -->
+    </div>
+    
+  </div>
+  <!-- / LAYOUT GRID -->
+  
+</div>
+<!-- / PAGE HEADER -->
+   <!-- PRIMARY CONTENT WRAPPER -->
+      <!-- / PAGE HEADER -->
+   <!-- PRIMARY CONTENT WRAPPER -->
+<div class="myapp">
+    
+      <div aria-labelledby="newButtonForm">
+    <!-- BOXED AREA -->
+    <fieldset class="slds-box slds-theme--default slds-container--medium">
+      <legend id="newaccountform" class="slds-text-heading--medium slds-p-vertical--medium">Add a new Button</legend>
+      <b>Object:</b> <apex:selectList value="{!choosenObject}" size="1" label="Object">
+           <apex:selectOptions value="{!ListOfObject}"/>
+        <apex:actionSupport event="onchange" action="{!populateFields}"  reRender="st,st1"/>
+       
+        </apex:selectList>
+        <br/>     
+         <br/>    
+        <b>SMS Button Type:</b><apex:selectList value="{!choosenButtonType}" size="1" label="SMS Button Type">
+        	<apex:selectOptions value="{!ButtonType}" />  
+        </apex:selectList>
+          <br/>
+        <br/>  
+         <b>Mobile Phone Field:</b><apex:selectList value="{!choosenMobilePhone}" size="2" multiselect="true" label="Mobile Phone field" id="st">
+        <apex:selectOptions value="{!Mphonelist}"/>
+        </apex:selectList> 
+          <br/>  
+        <br/>  
+        <b>SMS Optout Field:</b><apex:selectList value="{!choosenOptOutField}" size="1" id="st1">
+        <apex:selectOptions value="{!outList}"/>
+        </apex:selectList>
+          <br/> 
+        <br/>  
+        <b>DefaultOptOutField:</b><apex:selectList value="{!choosenopField}" size="1" label="">
+            <apex:selectOptions value="{!defaultOptoutField}" />
+            </apex:selectList>
+        <br/>
+        <b><apex:commandButton action="{!Create}" value="Create"/></b>
+        
+     </fieldset>
+    </div>
+      </div>
+    </div>
+    </body>
+</html>
+        </apex:form>
+</apex:page>
