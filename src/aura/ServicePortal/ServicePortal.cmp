@@ -1,0 +1,187 @@
+<aura:component controller="ServiceController">
+	<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">    
+    <head>
+      <title>Service Portal</title>
+      <ltng:require styles="/resource/SLDS102/assets/styles/salesforce-lightning-design-system-ltng.css" />
+    </head> 
+        <div class="center-div">
+		<body>    
+          <!-- REQUIRED SLDS WRAPPER -->
+          <div class="slds">    
+            <!-- MASTHEAD -->
+            <!--Heading of Page-->
+            <!-- / MASTHEAD -->    
+        
+            <!-- PAGE HEADER -->
+            <div class="slds-page-header" role="banner">
+            <!-- LAYOUT GRID -->
+            <div class="slds-grid">
+            <!-- GRID COL -->
+            <div class="slds-col">
+              <!-- HEADING AREA -->
+              <p class="slds-text-heading--label">Configuration</p>
+              <h1 class="slds-text-heading--medium">Automated SMS - Service Configuration</h1>
+              <!-- /HEADING AREA -->
+            </div>
+            
+          </div>
+          <!-- / LAYOUT GRID -->
+          
+            </div>
+            <!-- / PAGE HEADER -->
+               <!-- PRIMARY CONTENT WRAPPER -->
+            <div class="myapp">
+                
+                  <div aria-labelledby="newaccountform" >
+                <!-- BOXED AREA -->
+                <fieldset class="slds-box slds-theme--default slds-container--medium">
+                  <legend id="newaccountform" class="slds-text-heading--medium slds-p-vertical--medium">Add a new configuration</legend>
+                      
+            <div class="slds-form--stacked">
+                
+                <div class="slds-form-element">
+                 <div class="slds-form-element__control">
+                    <label class="slds-checkbox">
+                      <ui:inputCheckbox value="{!v.AppointmentConfirmation}"/> 
+                      <span class="slds-checkbox--faux"></span>
+                      <span class="slds-form-element__label">Send Appointment Confirmation with following template</span>
+                    </label>
+                  </div>
+                 </div>
+                 <!-- / SEND APPOINMENT CONFIRMATION -->
+                <div class="slds-form-element">
+                  <div class="slds-form-element__control">
+                       <select id="select-01" class="slds-select">
+                      <option>Select SMS Template</option>
+                      <option>Option Two</option>
+                      <option>Option Three</option>
+                    </select>
+                  </div>
+                </div>
+  				<!-- / ACTION ON RESPONSE -->
+                <div class="slds-form-element">
+                    <br/>
+                    <label class="slds-text-heading--small" for="inputSample2">Action on response</label>
+					<div class="margins">
+                 <!-- / CONFIRMATION KEYWORD FIELD -->       
+                 <div class="slds-form-element__control">  
+                    <label class="slds-checkbox">
+                     <ui:inputCheckbox aura:id="checkbox" value="{!v.Updateonconfirmation}" click="{!c.EnableDisableText}"/>   
+                      <span class="slds-checkbox--faux"></span>
+                      <span class="slds-form-element__label">Update on confirmation field</span>
+                        <ui:inputText value="{!v.confirmkeyword}" aura:id="textbox" class="slds-input" disabled="true"/>
+                    </label>
+                    </div>
+					</div>	
+                 </div>
+                 <!-- / FOLLOWUP KEYWORD FIELD --> 
+                 <div class="slds-form-element">
+                 <div class="slds-form-element__control">
+                     <div class="margins">
+                    <label class="slds-checkbox">
+                      <ui:inputCheckbox value="{!v.followuptask}" aura:id="checkbox1" click="{!c.EnableDisableText}" /> 
+                      <span class="slds-checkbox--faux"></span>
+                      <span class="slds-form-element__label">Create followup task on keyword</span>
+                        <ui:inputText value="{!v.Followupkeyword}" aura:id="textbox1" class="slds-input" disabled="true" />
+                    </label>
+                  </div>
+                 </div>
+                </div>
+                <!-- / SEND APPOINTMENT REMINDER FILD --> 
+                <!-- / FIELDSET START -->
+                <fieldset class="slds-form-element"><br/>
+                  <div class="slds-form-element__control">
+                      
+                       <label class="slds-checkbox">
+                      <ui:inputCheckbox aura:id="SendAppoinment" value="{!v.SendAppointmentReminder}" click="{!c.EnableDisableChekbox}"/>
+                      <span class="slds-checkbox--faux"></span>
+                      <span class="slds-form-element__label">Send Appointment Reminder</span>
+                    </label>
+                    <div class="margins">
+                    <br/>
+                      <tr>
+                          <td>
+                              <!-- / REMINDER BEFORE 1 HOUR  --> 
+                            <label class="slds-checkbox" >
+                              <ui:inputCheckbox value="{!v.x1Hourprior}" aura:id="x1hr" disabled="true"/>
+                              <span class="slds-checkbox--faux"></span>
+                              <span class="slds-form-element__label">1 Hour prior</span>
+                            </label>
+                      	  </td>
+                    	<td>
+                            <!-- / REMINDER BEFORE 24 HOUR  --> 
+                            <label class="slds-checkbox" >
+                              <ui:inputCheckbox value="{!v.x24Hourprior}" aura:id="x24hr" disabled="true"/>
+                              <span class="slds-checkbox--faux"></span>
+                              <span class="slds-form-element__label">24 Hour prior</span>
+                            </label>
+                      </td>
+                      </tr>
+                  </div>
+                  </div>
+                </fieldset>
+                <!-- / FIELDSET END --> 
+                  <div class="slds-form-element__control">
+                      <br/>
+                       <label class="slds-checkbox">
+                      <ui:inputCheckbox value="{!v.SendTestDriveNotification}"/>
+                      <span class="slds-checkbox--faux"></span>
+                      <span class="slds-form-element__label">Send Test Drive Notification</span>
+                    </label>
+                  </div>
+                <div class="slds-form-element">
+                  <div class="slds-form-element__control">
+                       <select id="select-01" class="slds-select">
+                      <option>Select SMS Template</option>
+                      <option>Option Two</option>
+                      <option>Option Three</option>
+                    </select>
+                  </div>
+                </div>
+                <br/>
+                <div class="slds-form-element">    
+                    <button class="slds-button slds-button--brand" type="button" onclick="{!c.getInput}" >Save</button>
+                </div>
+              </div>
+            </fieldset>
+                </div>
+            </div>
+            <!-- / PRIMARY CONTENT WRAPPER -->
+              
+                <!-- FOOTER -->
+            <footer role="contentinfo" class="slds-p-around--large">
+              <!-- LAYOUT GRID -->
+              <div class="slds-grid slds-grid--align-spread">
+                  <ui:outputText aura:id="nameOutput" value=""/>
+                <p class="slds-col">Service Portal </p>
+                <p class="slds-col">&copy; Zen4orce</p>
+              </div>
+              <!-- / LAYOUT GRID -->
+            </footer>
+            <!-- / FOOTER -->
+                
+              </div>
+              <!-- / REQUIRED SLDS WRAPPER -->    
+		</body>  
+      </div>
+<!-- JAVASCRIPT -->
+    <style>
+        .margins
+        {
+        	margin-left:100px;
+   			margin-right: auto;
+   			width: 600px;
+			display: block;
+   			float: none;
+        }
+        .center-div
+        {
+          margin: 0 auto;
+          max-width: 800px;
+          height: 100px; 
+        }  
+    </style>
+<!-- / JAVASCRIPT -->    
+</html>
+
+</aura:component>
