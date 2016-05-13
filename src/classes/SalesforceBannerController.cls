@@ -1,217 +1,231 @@
 public  with sharing class SalesforceBannerController  {
-    public list<SelectOption> objects {get;set;}
-    public string choosenObject {get;set;}
-    public Map<String,Schema.SObjectType> gd = Schema.getGlobalDescribe();
-    public string choosenButtonType{get;set;}
-    public string choosenMobilePhone{get;set;}
-    public Schema.SObjectType sobjtype1;
-    public string choosenOptOutField {get;set;}
-    public string choosenopField{get;set;}	
-    public list<selectOption> Mphonelist {get;set;}
-    public list<selectOption> OutList {get;set;}
-    
-    //Fetch the list of Object in the Constructor
+    public string objects {get;set;}
+    public list<selectOption>  objectsList ;
+    public Map<String,Schema.SObjectType> objectMap;
+    public string buttonType{get;set;}
+    public list<string> mobilePhone{get;set;}
+    public Schema.SObjectType sobjtype;
+    public string optOutField {get;set;}
+    public string defaultOptoutField {get;set;}	
+    public list<selectOption> mPhonelist {get;set;}
+    public list<selectOption> smsOptOutList {get;set;}
     public SalesforceBannerController()
-    {
-      	
-    		    Schema.SObjectType type = gd.get(choosenObject);
-                objects = new list<selectoption>();
-                list<String> sortObject = new list<String>();
-                sortObject.addAll(gd.KeySet());
-                sortObject.sort();
-                choosenObject = 'NONE';
-                choosenMobilePhone = ' ';
-                choosenOptOutField = ' ';
-                objects.add(new selectOption('NONE','NONE'));
-                choosenopField = 'Yes';
-         		DescribeSObjectResult[] results = Schema.describeSObjects(sortObject);
-             
-              
-       
+    {       
         try
         {
-            // Try-catch block for handling excepion while comparing list
-           for(Schema.DescribeSObjectResult res : results)
-                {
-                    String resString = res.getName();
-                    if(!res.isCustomSetting() && res.getRecordTypeInfos().size() > 0  && res.isSearchable() && res.isDeletable() && res.isCreateable() && res.isUpdateable()  && res.isUndeletable() )
-                   		 {
-                            System.debug(res.getName());
-                             objects.add(new selectOption(res.getName(),res.getLabel()));
-                            
-                    	 }
-                   
-                  }
+            // Try-catch block for handling exceptions
+	        objects = 'NONE';
+	        objectslist = new list<selectoption>();
+            MobilePhone = new list<String>();
+	        defaultOptoutField = 'Yes';
         }
-         
         catch(Exception e)
         {
-            System.debug('An exception occurred: ' + e.getMessage());
+        	//you can display this message on screen to notify user in apex:messages
+        	 ApexPages.addmessage(new ApexPages.message(ApexPages.severity.ERROR,e.getMessage()));
         }
     }
-    // Get the Populated field of Mobile Phone list and Boolean Value in one method
-    public PageReference populateFields()
+    
+    // Get the Populated fields of Mobile Phone list and OptOutlist  Values in one method
+    /* Description - Purpose of this method is to populate the related fields like mobile phone, text, formula field on VF page 
+    depending on the selected object */
+    
+    public void populateFields()
     {
         try{
             // Try-catch block for handling exception   
-            	Mphonelist = new list<SelectOption>();
-                OutList = new list<SelectOption>();
-                if(choosenObject != 'NONE')
+            	mPhonelist = new list<SelectOption>();
+                smsOptOutList = new list<SelectOption>();
+                if(Objects != 'NONE')
                 {
-                    Mphonelist = getMobilePhone();
-                    OutList = getOptoutField();
+                   
+                    if(mPhonelist.size() > 4)
+                    {
+                        ApexPages.addmessage(new ApexPages.message(ApexPages.severity.WARNING,'Please select max 3 MobilePhone list'));
+                    }
+                    else
+                    {
+                         mPhonelist = getMphonelist();//get the list of all mobile phone fields for selected object
+                         smsOptOutList = getOptOutFieldList();// get the list of all boolean and formula boolean fields for selected objects
+                    }
+                  
                 }
         }
         catch(Exception e)
         {
-            System.debug('An exception occurred: ' + e.getMessage());
+        	
+            ApexPages.addmessage(new ApexPages.message(ApexPages.severity.ERROR,e.getMessage()));
         }
-        return null;
-                    
-    }
-    // Method for getting list of Object
-  public list<selectoption> getListOfObject()
-  {
+     }
+    
+    //Fetch the list of Object in the method
+    /* Description - Purpose of this constructor is to fetch the list of custom and standard object 
+    with specific features and setting the deafuilt values on VF page */
+    
+   public list<selectoption> getListOfObjects()
+   {
+      objectslist.add(new selectOption('NONE','NONE'));
+      objectMap = Schema.getGlobalDescribe();
+      list<String> sortObject = new list<String>();
+      sortObject.addAll(ObjectMap.KeySet());
+      DescribeSObjectResult[] results = Schema.describeSObjects(sortObject); 
+     //sourabh 
+        String resString ;
+      for(Schema.DescribeSObjectResult res : results)
+      	{
+            resString = res.getName();
+            if(!res.isCustomSetting() && res.getRecordTypeInfos().size() > 0  && res.isSearchable() && res.isDeletable() && res.isCreateable() && res.isUpdateable()  && res.isUndeletable() )
+            {
+                objectsList.add(new selectOption(res.getName(),res.getLabel()));
+            }
+        }
+      objectsList.sort();
+      return objectsList;
+   }
+   //Get the list of SMS Button Type
+   public list<selectOption> getBTypeList()
+   {
+    list<selectOption> bType = new list<selectOption>();
+  	try
+  	{
+      // use custom setting here 
       
-      return objects;
-  }
-    //Get the list of SMS Button Type 
-  public list<selectOption> getButtonType()
-  {
-      list<selectOption> btype = new list<selectOption>();
-      btype.add(new selectOption('Single','Single'));
-      btype.add(new selectOption('Single Popup','Single Popup'));
-      btype.add(new selectOption('Bulk','Bulk'));
-      btype.add(new selectOption('Bulk Popup','Bulk Popup'));
-      
-      return btype;
-          
-  }
+        for(ButtonType__c b : ButtonType__c.getall().values())
+        {
+             bType.add(new selectOption(b.name,b.name));
+        }
+  	}
+  	catch (Exception e)
+  	{
+  		ApexPages.addmessage(new ApexPages.message(ApexPages.severity.ERROR,e.getMessage()));
+  	} 
+    return bType;
+   }
     //Get the list of DefaultOptoutField
-    public list<selectOption> getDefaultOptoutField()
-    {
-        list<selectOption> opField = new list<selectOption>();
-        opField.add(new selectOption('Yes','Yes'));
-        opField.add(new selectOption('No','No'));
+   public list<selectOption> getdOptoutFieldList()
+   {
+    	list<selectOption> opField = new list<selectOption>();
+    	try
+    	{
+	    	for(DefaultOptOut__c d : DefaultOptOut__c.getAll().values()) 
+            {
+                opField.add(new selectOption(d.name,d.name));
+            }
+	    }
+    	catch(Exception e)
+    	{
+    		ApexPages.addmessage(new ApexPages.message(ApexPages.severity.ERROR,e.getMessage()));
+    	}  
         return opField;
     }
+    
     //Fetch the list of Mobile list 
-  public list<selectOption> getMobilePhone()
-  {
-      list<selectOption> MPhoneList = new list<selectOption>();
-   
-          try
-          {
-              sobjtype1 = gd.get(choosenObject) ;
-              Map<String, Schema.SObjectField> fieldMap = sobjtype1 .getDescribe().fields.getMap();
-              
-               if( choosenObject != 'NONE')
-               {
-                    for(String fieldName : fieldMap.keySet())
-                    {
-                  
-                        schema.describefieldresult dfield = fieldMap.get(fieldName).getDescribe();
-                        Boolean formulaField = isFormula(fieldMap.get(fieldName));
-                        
-                        //It provide to get the object field data type.
-                        Schema.DisplayType fdataType = fieldMap.get(fieldName).getDescribe().getType();
-                      
-                        if(fdataType == Schema.DisplayType.STRING && fdataType != Schema.DisplayType.ADDRESS ||fdataType == Schema.DisplayType.PHONE)
+    /* Description - Purpose of this Method is to fetch the list of custom and standard object 
+    with specific features and setting the deafuilt values on VF page */
+    
+	public list<selectOption> getMphonelist()
+  		{
+    		list<selectOption> mPhoneList = new list<selectOption>();
+			try
+    {
+    sobjtype = objectMap.get(Objects) ;
+    Map<String, Schema.SObjectField> fieldMap = sobjtype.getDescribe().fields.getMap();
+            if(objects != 'NONE')
+            {
+                for(String fieldName : fieldMap.keySet())
+                {
+                    Boolean formulaField = isFormula(fieldMap.get(fieldName));//checks whether the field is formula field or not
+                    //Provides the datatype of field
+                    Schema.DisplayType fDataType = fieldMap.get(fieldName).getDescribe().getType();
+                    if(fDataType == Schema.DisplayType.STRING ||fDataType == Schema.DisplayType.PHONE)
                         {
                              MPhoneList.add(new selectOption(String.valueOf(fieldName),String.valueOf(fieldName)));
                         }
-                        else if(formulaField== true && fdataType == Schema.DisplayType.STRING)
+                    else if(formulaField== true && fDataType == Schema.DisplayType.STRING)
                         {
                             MPhoneList.add(new selectOption(String.valueOf(fieldName),String.valueOf(fieldName)));
                         }
                    
-                	}
+                }
          	} 
-              else
-              {
-                  MPhoneList = null;
-              }
-          }
+            else
+            {
+                  mPhoneList = null;
+            }
+        }
        catch(Exception e)
        {
-           System.debug(e.getMessage());
+       		ApexPages.addmessage(new ApexPages.message(ApexPages.severity.ERROR,e.getMessage()));
        }
-     
-    return MPhoneList;
+      	return mPhoneList;
   }
-    //Fetch the list of SMS Optout Fields
-  public list<selectOption> getOptoutField()
+    //Fetch the list of SMS Optout Fields proper description required
+    /*Description - Purpose of this method is to get the related fields like Boolean fields and  formula fields on VF page 
+      depending on the selected object*/
+  public list<selectOption> getOptOutFieldList()
   {
-      list<selectOption> OutField = new list<selectOption>();
-   
-          try
-          {
-          sobjtype1 = gd.get(choosenObject);      
-          Map<String, Schema.SObjectField> fieldMap = sobjtype1 .getDescribe().fields.getMap();
-          if( choosenObject != 'NONE')
-           {
-        		for(String fieldName : fieldMap.keySet())
-        		{
-          
-                        //It provide to get the object field data type.
-                        Schema.DisplayType fDataType = fieldMap.get(fieldName).getDescribe().getType();
-                        schema.describefieldresult dField = fieldMap.get(fieldName).getDescribe();
-                        Boolean formulaField = isFormula(fieldMap.get(fieldName));
-                        if(fDataType == Schema.DisplayType.BOOLEAN)
-                        {
-                             OutField.add(new selectOption(String.valueOf(fieldName),String.valueOf(fieldName)));
-                        }
-                        else if(formulaField== true && fDataType == Schema.DisplayType.BOOLEAN)
-                        {
-                             OutField.add(new selectOption(String.valueOf(fieldName),String.valueOf(fieldName)));
-                        }
-                        
-                   } 
-            }
-          
-          else
-          {
-              OutField = null;
-          }
-      }
-      catch(Exception e)
-      {
-      	System.debug(e.getMessage());
-      }
-      return OutField;
-   
-  } 
+	list<selectOption> outField = new list<selectOption>();
+   	try
+    {
+        sObjType = objectMap.get(objects);      
+        Map<String, Schema.SObjectField> fieldMap = sObjType.getDescribe().fields.getMap();
+        if(objects != 'NONE')
+        {
+            for(String fieldName : fieldMap.keySet())
+            {
+                //It provide to get the object field data type.
+                Schema.DisplayType fDataType = fieldMap.get(fieldName).getDescribe().getType();
+                schema.describefieldresult dField = fieldMap.get(fieldName).getDescribe();
+                Boolean formulaField = isFormula(fieldMap.get(fieldName));
+                if(fDataType == Schema.DisplayType.BOOLEAN)
+                {
+                    OutField.add(new selectOption(String.valueOf(fieldName),String.valueOf(fieldName)));
+                }
+                else if(formulaField== true && fDataType == Schema.DisplayType.BOOLEAN)
+                {
+                    OutField.add(new selectOption(String.valueOf(fieldName),String.valueOf(fieldName)));
+                }
+            } 
+        }
+        else
+        {
+            outField = null;
+        }
+    }
+    catch(Exception e)
+    {
+        ApexPages.addmessage(new ApexPages.message(ApexPages.severity.ERROR,e.getMessage()));
+    }
+    return outField;
+   } 
     // Method to Find Formula Field
-    public static Boolean isFormula(SObjectField field)
+	public static Boolean isFormula(SObjectField field)
 	{
     	return field.getDescribe().isCalculated();
 	}
     
-    //Method for createButton 
-    public void Create()
+    //Method for creating a Button 
+    public void createButton()
     {
         
         try
         {
-            if(choosenButtonType == 'Single')
+           if(buttonType == 'Single')
             {
-                 MetadataServiceExamples.createButton(choosenObject, SendSMS(), generateRandomString(3), generateRandomString(3));
-                
+                MetadataServiceExamples.createButton(objects,sendSMSButton(), generateRandomString(3));
             }
         }
         catch(Exception e)
         {
-          
-           MetadataServiceExamples.createButton(choosenObject, SendSMS(),generateRandomString(3),generateRandomString(3));
-           System.debug(e.getMessage());
-              
+          MetadataServiceExamples.createButton(Objects, sendSMSButton(),generateRandomString(3));
         }
            
     }
     // Get the random string 
     public  String generateRandomString(Integer len) 
     {
-            final String chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz';
+        // SS 
+            final String chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxY';
             String randStr = '';
             while (randStr.length() < len)
             {
@@ -221,9 +235,10 @@ public  with sharing class SalesforceBannerController  {
       		return randStr; 
 	}
     
-    //Get the JavaScript code as a  string to send SMS
-    public String SendSMS()
+    //Get the JavaScript code as a  string to create a button 
+    public String sendSMSButton()
     {
+        // CS
        String s1 = 
             '{!REQUIRESCRIPT("/soap/ajax/14.0/connection.js")} '+
             '{!REQUIRESCRIPT("/soap/ajax/14.0/apex.js")} '+

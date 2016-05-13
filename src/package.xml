@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
-        <members>*</members>
+        <members>MetadataService</members>
+        <members>MetadataServiceExamples</members>
+        <members>SalesforceBannerController</members>
+        <members>Sample</members>
         <name>ApexClass</name>
     </types>
     <types>
-        <members>*</members>
+        <members>Sample</members>
         <name>ApexComponent</name>
     </types>
     <types>
-        <members>*</members>
+        <members>SalesforceBanner</members>
+        <members>Sample</members>
         <name>ApexPage</name>
     </types>
     <types>
-        <members>*</members>
+        <members>Sample</members>
         <name>ApexTrigger</name>
     </types>
     <types>
-        <members>*</members>
+        <members>SLDS102</members>
         <name>StaticResource</name>
     </types>
     <version>36.0</version>
