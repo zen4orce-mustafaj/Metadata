@@ -60,6 +60,7 @@
 									</apex:selectList>
 										<br/>
 										<br/>
+                                    <apex:inputText label="Label of the Button:" value="{!buttonLabel}" style="width:50%;border-radius: 3px 3px 3px 3px;height: 25px"/>
 									<b><apex:commandButton action="{!createButton}" value="Create" style="width:15%;border-radius: 3px 3px 3px 3px;height: 25px"/></b>
 								</apex:pageBlockSection>
 							</apex:pageBlock>
