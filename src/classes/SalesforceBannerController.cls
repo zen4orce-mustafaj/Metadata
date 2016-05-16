@@ -11,7 +11,7 @@ public  with sharing class SalesforceBannerController  {
     public list<selectOption> smsOptOutList {get;set;}
     public string buttonLabel{get;set;}
     
-    //
+    //Constructor of the class
     public SalesforceBannerController()
     {       
         try
@@ -28,7 +28,7 @@ public  with sharing class SalesforceBannerController  {
         	 ApexPages.addmessage(new ApexPages.message(ApexPages.severity.ERROR,e.getMessage()));
         }
     }
-    
+
     // Get the Populated fields of Mobile Phone list and OptOutlist  Values in one method
     /* Description - Purpose of this method is to populate the related fields like mobile phone, text, formula field on VF page 
     depending on the selected object */
@@ -73,23 +73,25 @@ public  with sharing class SalesforceBannerController  {
       objectsList.sort();
       return objectsList;
    }
+    
    //Get the list of SMS Button Type
    /*Description - Purpose of this method is to fetch the list of button type using custom setting ButtonType__c*/
+    
    public list<selectOption> getBTypeList()
    {
-    list<selectOption> bType = new list<selectOption>();
-  	try
-  	{
-       for(ButtonType__c b : ButtonType__c.getall().values())
+        list<selectOption> bType = new list<selectOption>();
+        try
         {
-             bType.add(new selectOption(b.name,b.name));
+           for(ButtonType__c b : ButtonType__c.getall().values())
+            {
+                 bType.add(new selectOption(b.name,b.name));
+            }
         }
-  	}
-  	catch (Exception e)
-  	{
-  		ApexPages.addmessage(new ApexPages.message(ApexPages.severity.ERROR,e.getMessage()));
-  	} 
-    return bType;
+        catch (Exception e)
+        {
+            ApexPages.addmessage(new ApexPages.message(ApexPages.severity.ERROR,e.getMessage()));
+        } 
+        return bType;
    }
     //Get the list of DefaultOptoutField
     /*Description purpose of this method is to fetch the list of DefaultOptoutField using custom setting DefaultOptOut__c*/
@@ -115,38 +117,28 @@ public  with sharing class SalesforceBannerController  {
     with specific features and setting the deafuilt values on VF page */
     
 	public list<selectOption> getMphonelist()
-  		{
-    		list<selectOption> mPhoneList = new list<selectOption>();
-			try
-    		{
-                sobjtype = objectMap.get(Objects) ;
-                Map<String, Schema.SObjectField> fieldMap = sobjtype.getDescribe().fields.getMap();
-                if(objects != 'NONE')
+  	{
+        list<selectOption> mPhoneList = new list<selectOption>();
+        try
+        {
+            sobjtype = objectMap.get(Objects) ;
+            Map<String, Schema.SObjectField> fieldMap = sobjtype.getDescribe().fields.getMap();
+            for(String fieldName : fieldMap.keySet())
+            {
+                //Provides the datatype of field
+                Schema.DisplayType fDataType = fieldMap.get(fieldName).getDescribe().getType();
+                if(fDataType == Schema.DisplayType.STRING ||fDataType == Schema.DisplayType.PHONE)
                 {
-                    for(String fieldName : fieldMap.keySet())
-                    {
-                        Boolean formulaField = isFormula(fieldMap.get(fieldName));//checks whether the field is formula field or not
-                        //Provides the datatype of field
-                        Schema.DisplayType fDataType = fieldMap.get(fieldName).getDescribe().getType();
-                        if(fDataType == Schema.DisplayType.STRING ||fDataType == Schema.DisplayType.PHONE)
-                            {
-                                 MPhoneList.add(new selectOption(String.valueOf(fieldName),String.valueOf(fieldName)));
-                            }
-                        else if(formulaField== true && fDataType == Schema.DisplayType.STRING)
-                            {
-                                MPhoneList.add(new selectOption(String.valueOf(fieldName),String.valueOf(fieldName)));
-                            }
-                     }
-                } 
-                else
-                {
-                      mPhoneList = null;
+                    mPhoneList.add(new selectOption(String.valueOf(fieldName),String.valueOf(fieldName)));
+                    
                 }
+                
             }
-       catch(Exception e)
-       {
-       		ApexPages.addmessage(new ApexPages.message(ApexPages.severity.ERROR,e.getMessage()));
-       }
+        } 
+		catch(Exception e)
+        {
+            ApexPages.addmessage(new ApexPages.message(ApexPages.severity.ERROR,e.getMessage()));
+        }
       	return mPhoneList;
   }
     //Fetch the list of SMS Optout Fields proper description required
@@ -159,28 +151,16 @@ public  with sharing class SalesforceBannerController  {
     {
         sObjType = objectMap.get(objects);      
         Map<String, Schema.SObjectField> fieldMap = sObjType.getDescribe().fields.getMap();
-        if(objects != 'NONE')
-        {
-            for(String fieldName : fieldMap.keySet())
+        for(String fieldName : fieldMap.keySet())
             {
                 //It provide to get the object field data type.
                 Schema.DisplayType fDataType = fieldMap.get(fieldName).getDescribe().getType();
                 schema.describefieldresult dField = fieldMap.get(fieldName).getDescribe();
-                Boolean formulaField = isFormula(fieldMap.get(fieldName));
                 if(fDataType == Schema.DisplayType.BOOLEAN)
                 {
                     OutField.add(new selectOption(String.valueOf(fieldName),String.valueOf(fieldName)));
                 }
-                else if(formulaField== true && fDataType == Schema.DisplayType.BOOLEAN)
-                {
-                    OutField.add(new selectOption(String.valueOf(fieldName),String.valueOf(fieldName)));
-                }
             } 
-        }
-        else
-        {
-            outField = null;
-        }
     }
     catch(Exception e)
     {
@@ -188,14 +168,7 @@ public  with sharing class SalesforceBannerController  {
     }
     return outField;
    } 
-    // Method to Find Formula Field
-    /* Description - purpose of this method is know whether fields property isFormula() returns true or false     */
-	public static Boolean isFormula(SObjectField field)
-	{
-    	return field.getDescribe().isCalculated();
-	}
-    
-    //Method for creating a Button 
+   //Method for creating a Button 
     public void createButton()
     {
         try
@@ -235,7 +208,6 @@ public  with sharing class SalesforceBannerController  {
             'var cssUrl = "{!URLFOR("/resource/smagicinteract__smJQuery/css/sm-theme/jquery-ui-1.10.4.custom.min.css")}";'+
             'var relatedObjects = ‘<Related_Object_1>,<Related_Object_02>’; '+
             'openSMSPage(recordType, idToUpdate, userId, nameField, mobileField, optOutField, optOutDefaultValue, smsType, elementIdVar, packagePrefix, showUserDropDown, dialogTitle, cssUrl, relatedObjects);';
-		
-        return s1;
+		 return s1;
     }
 }
